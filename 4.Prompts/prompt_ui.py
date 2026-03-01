@@ -37,9 +37,8 @@ length_input = st.selectbox(
 template = load_prompt("template.json")
 
 if st.button("Summarize"):
-    user_input = template.format(
-        paper=paper_input, style=style_input, length=length_input
-    )
-    result = model.invoke(user_input)
+    chain = template | model
+    user_input = {"paper": paper_input, "style": style_input, "length": length_input}
+    result = chain.invoke(user_input)
     st.write("Model Response:")
     st.write(result.content)
